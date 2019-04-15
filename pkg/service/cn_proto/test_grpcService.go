@@ -13,13 +13,8 @@ const (
 	apiVersion = "cn_proto"
 )
 
-// test_gRPCServiceServer
-type test_gRPCServiceServer struct {
-	db *sql.DB
-}
-
 // connect SQL database
-func (s *test_gRPCServiceServer) connect(ctx context.Context) (*sql.Conn, error) {
+func (s *testGrpcserviceserver) connect(ctx context.Context) (*sql.Conn, error) {
 	c, err := s.db.Conn(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Unknown, "failed to connect to database-> "+err.Error())
@@ -28,7 +23,7 @@ func (s *test_gRPCServiceServer) connect(ctx context.Context) (*sql.Conn, error)
 }
 
 // Create
-func (s *test_gRPCServiceServer) Create(ctx context.Context, req *cn_proto.CreateRequest) (*cn_proto.CreateResponse, error) {
+func (s *testGrpcserviceserver) Create(ctx context.Context, req *cn_proto.CreateRequest) (*cn_proto.CreateResponse, error) {
 	// check API
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
@@ -60,7 +55,7 @@ func (s *test_gRPCServiceServer) Create(ctx context.Context, req *cn_proto.Creat
 }
 
 // read
-func (s *test_gRPCServiceServer) Read(ctx context.Context, req *cn_proto.ReadRequest) (*cn_proto.ReadResponse, error) {
+func (s *testGrpcserviceserver) Read(ctx context.Context, req *cn_proto.ReadRequest) (*cn_proto.ReadResponse, error) {
 	// check api
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
@@ -110,7 +105,7 @@ func (s *test_gRPCServiceServer) Read(ctx context.Context, req *cn_proto.ReadReq
 }
 
 // Delete
-func (s *test_gRPCServiceServer) Delete(ctx context.Context, req *cn_proto.DeleteRequest) (*cn_proto.DeleteResponse, error) {
+func (s *testGrpcserviceserver) Delete(ctx context.Context, req *cn_proto.DeleteRequest) (*cn_proto.DeleteResponse, error) {
 	// check api
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
@@ -148,7 +143,7 @@ func (s *test_gRPCServiceServer) Delete(ctx context.Context, req *cn_proto.Delet
 }
 
 // update
-func (s *test_gRPCServiceServer) Update(ctx context.Context, req *cn_proto.UpdateRequest) (*cn_proto.UpdateResponse, error) {
+func (s *testGrpcserviceserver) Update(ctx context.Context, req *cn_proto.UpdateRequest) (*cn_proto.UpdateResponse, error) {
 	// check api
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
@@ -182,7 +177,7 @@ func (s *test_gRPCServiceServer) Update(ctx context.Context, req *cn_proto.Updat
 }
 
 // read All
-func (s *test_gRPCServiceServer) ReadAll(ctx context.Context, req *cn_proto.ReadAllRequest) (*cn_proto.ReadAllResponse, error) {
+func (s *testGrpcserviceserver) ReadAll(ctx context.Context, req *cn_proto.ReadAllRequest) (*cn_proto.ReadAllResponse, error) {
 	// check api
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
@@ -221,13 +216,18 @@ func (s *test_gRPCServiceServer) ReadAll(ctx context.Context, req *cn_proto.Read
 	}, nil
 }
 
+// test_gRPCServiceServer
+type testGrpcserviceserver struct {
+	db *sql.DB
+}
+
 // New db create test_gRPC service
-func NewTest_gRPCServiceServer(db *sql.DB) cn_proto.TestGrpcServiceServer  {
-	return &test_gRPCServiceServer{db: db}
+func NewtestGrpcserviceserver(db *sql.DB) cn_proto.TestGrpcServiceServer {
+	return &testGrpcserviceserver{db: db}
 }
 
 // func check API
-func (s *test_gRPCServiceServer) checkAPI(api string) error {
+func (s *testGrpcserviceserver) checkAPI(api string) error {
 	// API version is "" means use current version of the service
 	if len(api) > 0 {
 		if apiVersion != api {

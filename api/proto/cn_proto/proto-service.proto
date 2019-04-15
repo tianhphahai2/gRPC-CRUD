@@ -1,0 +1,4 @@
+syntax = "proto";
+
+package cn_proto;
+

@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	// mysql driver
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/tianhphahai2/gRPC-CRUD/pkg/api/cn_proto"
 	"github.com/tianhphahai2/gRPC-CRUD/pkg/protocol/grpc"
 
+	// mysql driver
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // Config is configuration for Server
@@ -63,7 +63,7 @@ func Runserver() error {
 	}
 	defer db.Close()
 
-	v1API := cn_proto.NewTestGrpcServiceClient(db)
+	v1API := cn_proto.UnimplementedTestGrpcServiceServer{}
 
 	return grpc.RunSểver(ctx, v1API, cfg.GRPCPort)
 }

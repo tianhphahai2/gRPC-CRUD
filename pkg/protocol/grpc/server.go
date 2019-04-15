@@ -11,7 +11,7 @@ import (
 )
 
 // RunServer runs gRPC service
-func RunSểver(ctx context.Context, v1API cn_proto.TestGrpcServiceServer, port string) error {
+func Runserver(ctx context.Context, v1API cn_proto.TestGrpcServiceServer, port string) error {
 	listen, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return err

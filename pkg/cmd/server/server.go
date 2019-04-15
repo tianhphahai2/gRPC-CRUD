@@ -5,7 +5,11 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	// mysql driver
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/tianhphahai2/gRPC-CRUD/pkg/api/cn_proto"
+	"github.com/tianhphahai2/gRPC-CRUD/pkg/protocol/grpc"
+
 )
 
 // Config is configuration for Server

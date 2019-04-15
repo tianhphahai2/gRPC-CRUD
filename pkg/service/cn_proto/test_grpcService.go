@@ -162,12 +162,63 @@ func (s *test_gRPCServiceServer) Update(ctx context.Context, req *cn_proto.Updat
 	defer c.Close()
 
 	// update test_grpc
-	//res, err := c.ExecContext(ctx, "UPDATE test_grpc.test__grpc SET `Title`=?. `Descript`=? WHERE `id`=?",
-	//	req.)
+	res, err := c.ExecContext(ctx, "UPDATE test__grpc SET `Title`=?. `Descript`=? WHERE `id`=?",
+		req.TestGrpc.Title, req.TestGrpc.Description)
+
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "failed to update test_grpc-> "+err.Error())
+	}
+
+	rows, err := res.RowsAffected()
+
+	if rows == 0 {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("test_grpc with ID='%d' is not found", req.TestGrpc.Id))
+	}
+
+	return &cn_proto.UpdateResponse{
+		Api:apiVersion,
+		Updated:rows,
+	}, nil
 }
 
-func (test_gRPCServiceServer) ReadAll(context.Context, *cn_proto.ReadAllRequest) (*cn_proto.ReadAllResponse, error) {
-	panic("implement me")
+// read All
+func (s *test_gRPCServiceServer) ReadAll(ctx context.Context, req *cn_proto.ReadAllRequest) (*cn_proto.ReadAllResponse, error) {
+	// check api
+	if err := s.checkAPI(req.Api); err != nil {
+		return nil, err
+	}
+
+	// connect db
+	c, err := s.connect(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+
+	// get db
+	rows, err := c.QueryContext(ctx, "select `id`, `Title`, `Descript` from test__grpc")
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "failed to select from test_grpc-> "+err.Error())
+	}
+	defer rows.Close()
+
+	list := []*cn_proto.TestGrpc{}
+	if rows.Next() {
+		td := new(cn_proto.TestGrpc)
+		if err := rows.Scan(&td.Id, &td.Title, &td.Description); err != nil {
+			return nil, status.Error(codes.Unknown, "failed to retrieve field values from test_grpc row-> "+err.Error())
+		}
+		list = append(list, td)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, status.Error(codes.Unknown, "failed to retrieve data from test_grpc-> "+err.Error())
+	}
+
+	return &cn_proto.ReadAllResponse{
+		Api:apiVersion,
+		TestGrpc: list,
+	}, nil
 }
 
 // New db create test_gRPC service

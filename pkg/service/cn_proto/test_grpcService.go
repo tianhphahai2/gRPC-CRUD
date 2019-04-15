@@ -13,15 +13,6 @@ const (
 	apiVersion = "cn_proto"
 )
 
-// connect SQL database
-func (s *testGrpcserviceserver) connect(ctx context.Context) (*sql.Conn, error) {
-	c, err := s.db.Conn(ctx)
-	if err != nil {
-		return nil, status.Error(codes.Unknown, "failed to connect to database-> "+err.Error())
-	}
-	return c, nil
-}
-
 // Create
 func (s *testGrpcserviceserver) Create(ctx context.Context, req *cn_proto.CreateRequest) (*cn_proto.CreateResponse, error) {
 	// check API
@@ -235,4 +226,13 @@ func (s *testGrpcserviceserver) checkAPI(api string) error {
 		}
 	}
 	return nil
+}
+
+// connect SQL database
+func (s *testGrpcserviceserver) connect(ctx context.Context) (*sql.Conn, error) {
+	c, err := s.db.Conn(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "failed to connect to database-> "+err.Error())
+	}
+	return c, nil
 }

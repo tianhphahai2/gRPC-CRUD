@@ -63,7 +63,7 @@ func Runserver() error {
 	}
 	defer db.Close()
 
-	v1API := cn_proto.NewTestGrpcServiceServer(db)
+	v1API := cn_proto.NewtestGrpcserviceserver(db)
 
 	return grpc.Runserver(ctx, v1API, cfg.GRPCPort)
 }

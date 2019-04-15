@@ -162,8 +162,8 @@ func (s *test_gRPCServiceServer) Update(ctx context.Context, req *cn_proto.Updat
 	defer c.Close()
 
 	// update test_grpc
-	res, err := c.ExecContext(ctx, "UPDATE test_grpc.test__grpc SET `Title`=?. `Descript`=? WHERE `id`=?",
-		req)
+	//res, err := c.ExecContext(ctx, "UPDATE test_grpc.test__grpc SET `Title`=?. `Descript`=? WHERE `id`=?",
+	//	req.)
 }
 
 func (test_gRPCServiceServer) ReadAll(context.Context, *cn_proto.ReadAllRequest) (*cn_proto.ReadAllResponse, error) {

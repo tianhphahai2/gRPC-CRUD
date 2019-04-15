@@ -55,13 +55,13 @@ message DeleteResponse {
 message UpdateRequest {
     string api = 1;
 
-    int64 id = 2;
+    Test_grpc test_grpc = 2;
 }
 
 message UpdateResponse {
     string api = 1;
 
-    int64 Deleted = 2;
+    int64 Updated = 2;
 }
 
 message ReadAllRequest {

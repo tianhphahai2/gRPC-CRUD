@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/tianhphahai2/gRPC-CRUD/pkg/api/cn_proto"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
